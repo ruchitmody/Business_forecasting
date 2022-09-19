@@ -1,0 +1,162 @@
+---
+title: "Business Forecasting Homework 1"
+author: "Ruchit Jatin Mody"
+date: "2022-09-19"
+output: html_document
+---
+```{r}
+library(readxl)
+Typical_Employee_Survey_Data <- read_excel("C:/Users/Ruchit Modi/Downloads/Typical_Employee_Survey_Data.xlsx")
+View(Typical_Employee_Survey_Data)
+
+
+dfdata = data.frame(Typical_Employee_Survey_Data)
+
+# Explore Data Frame
+nrow(dfdata)
+names(dfdata)
+ncol(dfdata)
+nrow(dfdata)
+dim(dfdata) # shows number of rows & columns
+head(dfdata)
+head(dfdata, n=10L) # L shows integer datatype
+head(dfdata, n=10/5) # shows 2 rows
+head(dfdata, n=10/5.5) # shows 1 row
+head(dfdata, n=10.4) 
+tail(dfdata)
+tail(dfdata, n=5L)
+str(dfdata)
+dfdata$gender
+dfdata$gender[dfdata$gender == 1] <- "Male"   # Replace 1 by "Male"
+dfdata$gender
+
+dfdata$gender[dfdata$gender == 2] <- "Female"   # Replace 2 by "Female"
+head(dfdata$gender,n=10L)
+
+class(dfdata$gender)
+class(dfdata$age)
+
+dfdata$gender
+dfdata$gender <- factor(dfdata$gender, levels= c("Male","Female")) #changed order in factor.
+str(dfdata$gender)
+dfdata$Gender #shows null - case sensitive
+
+class(dfdata$gender)
+str(dfdata)
+
+# Column
+dfdata$how_proud
+dfdata$job_characteristics
+
+
+dfdata[2]
+dfdata[c("age")]
+dfdata[2:3]
+dfdata[2,3] # value at row2,column3
+dfdata[c("how_proud","job_characteristics")]
+
+# Rows
+dfdata[2,] #fetches record 2
+
+# Combined
+dfdata[2:3,c("age")]
+dfdata[5:6,2:3] #row 5,6 & column 2,3
+
+
+#Levels
+
+table(dfdata$age) #frequency of each data
+table(dfdata$age == 23) #frequency of age 23
+
+table(dfdata$age, dfdata$relations) #rows - age, column -  frequency 
+
+# Filtering
+
+dfdata[dfdata$age==32,] 
+
+# Ordering
+
+dfdata[order(dfdata$longetivity),] #by default ascending
+dfdata[order(-dfdata$longetivity),] #descending order
+
+# Change Column Name
+names(dfdata)[9] <- "sentiment"
+head(dfdata)
+
+
+# Change Column Name
+dfdata [2,2] <- "Female"
+head(dfdata)
+dfdata$age[1] <- 23
+head(dfdata)
+
+# Graphing
+barplot(dfdata$longetivity)
+barplot(dfdata$longetivity, main = "employee longevtivity as per age", xlab = "age", ylab = "longevity", col = "Blue", names.arg = dfdata$age)
+
+
+stem(dfdata$longetivity)
+hist(dfdata$age, main="age of employee" ,xlab="age")
+
+boxplot(dfdata$sentiment,dfdata$promotion_likelihood)
+
+## Summary Stats
+
+min(dfdata$sentiment)
+max(dfdata$sentiment)
+range(dfdata$longetivity)
+StatRange = max(dfdata$age) - min(dfdata$age)
+StatRange
+mean(dfdata$promotion_likelihood)
+sd(dfdata$job_turn_down)
+var(dfdata$job_turn_down)
+sqrt(var(dfdata$age))
+fivenum(dfdata$age)
+IQR(dfdata$longetivity)
+quantile(dfdata$longetivity)
+summary(dfdata$longetivity)
+boxplot.stats(dfdata$longetivity)
+boxplot.stats(dfdata$longetivity)$out
+
+# Data Frame Summary
+
+summary(dfdata)
+by(dfdata$age,dfdata$sentiment,mean)
+by(dfdata$age,dfdata$sentiment,sd)
+by(dfdata$age,dfdata$sentiment,summary)
+
+aggregate(dfdata$age,list("Type" = dfdata$sentiment),median)
+aggregate(dfdata$age,list("Type" = dfdata$sentiment),summary)
+
+
+
+
+
+```
+
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
