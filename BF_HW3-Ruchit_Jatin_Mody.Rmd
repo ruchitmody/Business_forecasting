@@ -1,0 +1,55 @@
+---
+title: "BF_HW2- Ruchit_Jatin_Mody"
+author: "Ruchit Jatin Mody"
+date: "2022-09-26"
+output: html_document
+---
+
+
+```{r}
+library(fpp)
+library(fpp2)
+#Q1. Pick a timeseries (TS) from R packages (fpp, fpp2, base to name a few). Make sure the TS has periodicity of Weekly, Monthly, Quarterly.
+
+#Ans: Using data() function to search for built-in datasets. Then picked UKgas time series data.
+
+data()
+UKgas
+
+#2. Describe the TS 
+
+#Ans: UKgas timeseries specifies quarterly UK gas consumption from 1960Q1 to 1986 Q4, in millions of therms. Length of the TS is 108. The minimum value in millions of therms is 84.8 and maximum value is 1163.9 and the median value is at 220.9.
+
+length(UKgas)
+head(UKgas,4)
+summary(UKgas)
+
+
+#3. Plot the TS and guess what the Acf plot would look like
+#Ans: After plotting the TS, it appears that there are two components involved - seasonal and trend. Seasonal because data is showing rises and falls that are not of a fixed frequency. There is an upward trend visible in the graph too. 
+
+plot(UKgas)
+
+#4. Do a Acf plot. What insight is the Acf plot providing about your TS.
+
+# The ACF plot shows seasonal component. The spikes are larger for the seasonal lags and the correlation gets weaker with increase in lag. There is no trend as the nearby lags are not strongly correlated.
+
+acf(UKgas)
+
+
+#5. Forecast using HoltWinters and see what the accuracy is
+
+Hw<- HoltWinters(UKgas)
+attributes(Hw)
+plot(Hw)
+tmp_Hw <- forecast(Hw)
+attributes(tmp_Hw)
+plot(tmp_Hw$residuals)
+hist(tmp_Hw$residuals)
+Acf(tmp_Hw$residuals)
+accuracy(tmp_Hw)
+
+
+# I have picked the whole TS because there were no missing values at any observation point and since the ACF plot clearly showed seasonal component, there was no requirement to decompose the TS.
+
+```
