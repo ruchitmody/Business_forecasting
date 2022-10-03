@@ -1,0 +1,67 @@
+---
+title: "BF_HW4-Ruchit_Jatin_Mody"
+author: "Ruchit Jatin Mody"
+date: "2022-10-02"
+output: html_document
+---
+
+```{r}
+
+library(fpp)
+library(fpp2)
+library(TTR)
+
+attributes(UKgas)
+plot(UKgas)
+Acf(UKgas)
+
+#take Mean of all available history
+
+mean_forecast <- meanf(UKgas,5)
+plot(mean_forecast)
+
+# Naive
+naive_forecast <- naive(UKgas,5)
+plot(naive_forecast)
+
+# Random Walk
+rwf_forecast <- rwf(UKgas,5)
+rwf_forecast <- rwf(UKgas,5, drift=TRUE)
+# Seasonal Naive
+snaive_forecast <- snaive(UKgas,5)
+
+# Moving Averages
+
+MA5_forecast <- ma(UKgas,order=5)
+MA9_forecast <- ma(UKgas,order=9)
+
+# plot all in a single chart
+plot(mean_forecast)
+lines(naive_forecast$mean,col="red")
+lines(rwf_forecast$mean,col="green")
+lines(snaive_forecast$mean,col="black")
+lines(MA5_forecast,col="Pink")
+lines(MA9_forecast,col="Blue")
+# what other attributes are there?
+attributes(naive_forecast)
+
+# Decomposition
+ets_forecast <- ets(UKgas)
+plot(ets_forecast)
+attributes(ets_forecast)
+ets_forecast$mse
+# HoltWinters
+HW_forecast <- HoltWinters(UKgas)
+plot(HW_forecast)
+SSE_Simple <- HoltWinters(UKgas,beta=FALSE,gamma=FALSE)
+attributes(SSE_Simple)
+plot(SSE_Simple)
+SSE_Simple$SSE
+head(SSE_Simple$fitted)
+
+#Forecast
+forecast_ets_1 <- forecast.ets(ets_forecast, h=5)
+plot(forecast_ets_1)
+forecast_ets_2 <- forecast(ets_forecast, h=5)
+plot(forecast_ets_2)
+```
