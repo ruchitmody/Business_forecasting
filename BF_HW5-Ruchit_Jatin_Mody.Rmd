@@ -1,0 +1,41 @@
+---
+title: "HW5-Ruchit_Jatin_Mody"
+author: "Ruchit Jatin Mody"
+date: "2022-10-14"
+output: html_document
+---
+
+```{r}
+library(fpp)
+library(fpp2)
+
+head(UKgas)
+plot(UKgas)
+stl_decomposition <- stl(UKgas,s.window ="periodic")
+plot(stl_decomposition)
+attributes(stl_decomposition)
+
+# printing out a seasonal adjustment
+seasadj(stl_decomposition)
+
+# Plotting a line on the graph
+plot(UKgas)
+lines(seasadj(stl_decomposition), col="Red")
+
+# Default period forecast
+f_stl_decomp <- forecast(stl_decomposition)
+# you can pass the # of period
+f_stl_decomp <- forecast(stl_decomposition,h=12)
+f_stl_decomp
+plot(f_stl_decomp)
+
+# alternate way 
+decomp_UKgas <- decompose(UKgas)
+
+# Each one shows different attributes 
+attributes(decomp_UKgas)
+seasadj(decomp_UKgas)
+
+
+```
+
