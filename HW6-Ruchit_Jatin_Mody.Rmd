@@ -1,0 +1,46 @@
+---
+title: "HW_ARIMA"
+author: "Ruchit Jatin Mody"
+date: "2022-11-15"
+output: html_document
+---
+
+```{r}
+library(fpp)
+library(fpp2)
+library(forecast)
+ukgas_timeseries <- ts(UKgas)
+plot(ukgas_timeseries)
+ndiffs(ukgas_timeseries)
+tsdisplay(ukgas_timeseries)
+ukgas_timeseries_diff1 <- diff(ukgas_timeseries, differences=1)
+plot(ukgas_timeseries_diff1)
+tsdisplay(ukgas_timeseries_diff1)
+auto_fit <- auto.arima(ukgas_timeseries_diff1, trace=TRUE, stepwise = FALSE)
+auto_fit
+attributes(auto_fit)
+plot(forecast(auto_fit,h=8,level=c(99.5)))
+
+#Residual Analysis
+Acf(auto_fit$residuals)
+Box.test(residuals(auto_fit), lag=30, type="Ljung")
+plot.ts(residuals(auto_fit))
+hist(auto_fit$residuals)
+tsdiag(auto_fit)
+
+# Seasonal Data
+plot(UKgas)
+nsdiffs(UKgas)
+ndiffs(UKgas)
+ndiffs((diff(UKgas,5)))
+tsdisplay(diff(diff(UKgas,5)))
+fit3 <- auto.arima(UKgas,trace=TRUE, stepwise = FALSE )
+fit3
+#Residual Analysis
+Acf(fit3$residuals)
+Box.test(residuals(fit3), lag=30, type="Ljung")
+plot.ts(residuals(fit3))
+hist(fit3$residuals)
+tsdiag(fit3)
+```
+
